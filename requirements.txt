@@ -1,0 +1,16 @@
+matplotlib
+numpy
+opencv-contrib-python==4.2.0.34
+pandas
+PyWavelets
+requests
+scipy
+scikit-image
+sklearn
+slidingwindow
+tensorflow-gpu==1.13.2
+tensorpack
+tqdm
+xlrd
+XlsxWriter
+PyYAML
