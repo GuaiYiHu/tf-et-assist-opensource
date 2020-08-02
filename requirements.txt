@@ -1,7 +1,9 @@
+Cython
 matplotlib
 numpy
 opencv-contrib-python==4.2.0.34
 pandas
+pycocotools
 PyWavelets
 requests
 scipy
