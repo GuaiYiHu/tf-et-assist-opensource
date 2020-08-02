@@ -16,6 +16,7 @@ The Dataloader and Post-processing code is from [tf-pose-estimation](https://git
 ### Environment
 - Ubuntu 16.04
 - Cuda 10.0
+- CuDNN 7.6.5
 - Anaconda
 
 ### Install
@@ -42,6 +43,7 @@ $ cd ../../
 Build c++ library for post processing.
 
 ```
+$ sudo apt-get install swig
 $ cd pafprocess
 $ swig -python -c++ pafprocess.i && python3 setup.py build_ext --inplace
 ```
