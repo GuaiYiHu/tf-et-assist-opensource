@@ -49,7 +49,7 @@ $ swig -python -c++ pafprocess.i && python3 setup.py build_ext --inplace
 Download data.zip and checkpoints.zip from the link below.
 
 BaiduNetDisk: Link: https://pan.baidu.com/s/1G3lJAsM0g_IkhwydRhTheg Password: bn7x
-
+Google Drive: Link: https://drive.google.com/drive/folders/12v_Zw6kGxNDqHsP8hRqBGyFGjNJdgLZT?usp=sharing
 ## Test
 Specify --mode or -m to the folder includes checkpoint files in 3d_exp_signal_processing.py.　　
 
