@@ -1,4 +1,4 @@
-# openpose_with_lstm_opensource
+# tf-et-assist-opensource
 This is an Implement of openpose with lstm module using TensorFlow.
 
 The original openpose project based on caffe is <a href="https://github.com/ZheC/Realtime_Multi-Person_Pose_Estimation">here</a>. 
@@ -22,8 +22,8 @@ The Dataloader and Post-processing code is from [tf-pose-estimation](https://git
 Clone the repo and install 3rd-party libraries.
 
 ```
-$ git clone https://github.com/GuaiYiHu/openpose_with_lstm_opensource
-$ cd openpose_with_lstm_opensource
+$ git clone https://github.com/GuaiYiHu/tf-et-assist-opensource
+$ cd tf-et-assist-opensource
 $ conda create -n py37 python=3.7
 $ conda activate py37
 $ pip3 install -r requirements.txt
