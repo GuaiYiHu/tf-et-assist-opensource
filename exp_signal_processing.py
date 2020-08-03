@@ -241,8 +241,6 @@ def smoother(path):
     r_wrist_y_frenquency_gt = caculate_frequency(y_positions)
     r_wrist_maintain_amplitude_gt = caculate_max_amplitude(amplitude,
                                                            r_wrist_y_frenquency_gt)
-    print(r_wrist_maintain_amplitude_gt)
-    print(r_wrist_maintain_amplitude)
     return getPoint(r_wrist_maintain_amplitude_gt), getPoint(
         r_wrist_maintain_amplitude), r_wrist_maintain_amplitude, r_wrist_maintain_amplitude_gt
 

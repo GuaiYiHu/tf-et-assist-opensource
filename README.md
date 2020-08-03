@@ -54,7 +54,19 @@ BaiduNetDisk: Link: https://pan.baidu.com/s/1G3lJAsM0g_IkhwydRhTheg Password: bn
 
 Google Drive: Link: https://drive.google.com/drive/folders/12v_Zw6kGxNDqHsP8hRqBGyFGjNJdgLZT?usp=sharing
 ## Test
-Specify --mode or -m to the folder includes checkpoint files in 3d_exp_signal_processing.py.　　
 
-+ To run on calculate mode,  run `python 3d_exp_signal_processing.py --mode cal`　　
-+ To run on data test mode, run `python 3d_exp_signal_processing.py --mode test`　　　　
+To run test on single  video in "data/" directory, run exp_signal_processing_single.py.
+Specify --video to the single video in "data/" directory in exp_signal_processing_single.py.　
+
++ For example,  run `python exp_signal_processing_single.py --video 'data/1/平举.mp4'`
+
+If the environment is correct, the result of 'data/1/平举.mp4' will be the same as the picture below.
+![Result single](pics/result_single.jpg)
+
+To run test on all videos in "data/" directory, run exp_signal_processing.py.
+Specify --mode or -m to the folder includes checkpoint files in exp_signal_processing.py.　　
++ To run on calculate mode,  run `python exp_signal_processing.py --mode cal`　
++ To run on data test mode, run `python exp_signal_processing.py --mode test`
+
+If the environment is correct, the result of test mode will be the same as the picture below.
+![Result all](pics/result_all.jpg)
