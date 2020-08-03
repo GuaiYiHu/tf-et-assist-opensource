@@ -20,7 +20,7 @@ def get_all_video_list(raw_dir, action_list):
     for action in action_list:
         tmp_video_list = []
         for f in files:
-            if action + '.mp4' in f and 'result' not in f:
+            if (action + '.mp4' in f or action + '.MTS' in f) and 'result' not in f:
                 tmp_video_list.append(f)
 
         video_list.update({action: tmp_video_list})

@@ -381,6 +381,8 @@ if __name__ == '__main__':
     video_output_parent_path = 'out'
 
     action_list = ['平举']
+    exp_type_list = ["_lstm", "_hand_coco"]
+
     if mode == 'cal':
         all_video_list = get_video_list.get_all_video_list(video_parent_path, action_list)
         run_lstm.main(all_video_list, video_output_parent_path, checkpoint_path, stage_num, hm_channels, paf_channels,
@@ -388,7 +390,7 @@ if __name__ == '__main__':
         get_pic_from_video.main(all_video_list, video_output_parent_path)
         run_hand.main(all_video_list, video_output_parent_path, hand_use_bn, hand_train_vgg, hand_checkpoint_path,
                       hand_backbone_net_ckpt_path)
-        dis_anno.main(all_video_list, video_output_parent_path, exp_list)
+        dis_anno.main_exp(all_video_list, video_parent_path, video_output_parent_path, exp_list, exp_type_list)
     elif mode == "test":
         right_count = 0
         threeD_list = []

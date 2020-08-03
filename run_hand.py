@@ -74,7 +74,7 @@ def run_hand(all_video_list, video_output_parent_path, use_bn, train_vgg, checkp
                 name = dir_name[-2]
                 save_path = video_output_parent_path + '/' + name
 
-                anno_loader = cut_body_part(anno_file=save_path + '/' + action + '.json',
+                anno_loader = cut_body_part(anno_file=save_path + '/' + action + '_lstm.json',
                                             coco_images=save_path + '/pics/')
                 img_info = []
                 anno_info = []

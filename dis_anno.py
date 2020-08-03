@@ -1,9 +1,17 @@
+import logging
+import sys
 import cv2
 import numpy as np
 from pycocotools.coco import COCO
 from tqdm import tqdm
 
-import get_video_list
+logger = logging.getLogger('run')
+logger.setLevel(logging.DEBUG)
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+formatter = logging.Formatter('[%(asctime)s] [%(name)s] [%(levelname)s] %(message)s')
+ch.setFormatter(formatter)
+logger.addHandler(ch)
 
 coco_pair = [
     (1, 3), (2, 4), (0, 5), (0, 6), (5, 7), (7, 9), (6, 8), (8, 10),
@@ -37,26 +45,70 @@ def draw_human(img, anno, path):
     return img
 
 
-def main(all_video_list, video_output_parent_path, exp_list):
+def main_exp(all_video_list, video_parent_path, video_output_parent_path, exp_list, exp_type_list):
     action_list = all_video_list.keys()
     for i in exp_list:
         print(i)
         for action in action_list:
-            result_path = video_output_parent_path + '/' + i
-            json_path = result_path + '/' + action + '.json'
-            video_save_path = result_path + '/' + action + '_lstm.mp4'
-            pic_path = result_path
+            for exp_type in exp_type_list:
+                result_path = video_output_parent_path + '/' + i
+                json_path = result_path + '/' + action + exp_type + '.json'
+                video_save_path = result_path + '/' + action + exp_type + '.mp4'
+                pic_path = result_path
 
-            coco = COCO(json_path)
+                coco = COCO(json_path)
+                video = video_parent_path + '/' + i + '/' + action + '.mp4'
+                if video is not None:
+                    cap = cv2.VideoCapture(video)
+                else:
+                    cap = cv2.VideoCapture(0)
+                _, image = cap.read()
+                if image is None:
+                    logger.error("Can't read video")
+                    sys.exit(-1)
+                fps = cap.get(cv2.CAP_PROP_FPS)
+                ori_w = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+                ori_h = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+                fourcc = cv2.VideoWriter_fourcc(*'MP4V')
+                video_saver = cv2.VideoWriter(video_save_path, fourcc, fps, (ori_w, ori_h))
 
-            fourcc = cv2.VideoWriter_fourcc(*'MP4V')
-            video_saver = cv2.VideoWriter(video_save_path, fourcc, 30, (800, 600))
+                for img, anno in tqdm(list(zip(coco.dataset['images'], coco.dataset['annotations']))):
+                    img = draw_human(img, anno, pic_path)
+                    video_saver.write(img)
 
-            for img, anno in tqdm(list(zip(coco.dataset['images'], coco.dataset['annotations']))):
-                img = draw_human(img, anno, pic_path)
-                img = cv2.resize(img, (800, 600))
-                video_saver.write(img)
 
+def main(all_video_list, video_output_parent_path, exp_type_list):
+    action_list = all_video_list.keys()
+    for action in action_list:
+        video_list = all_video_list[action]
+        for video in video_list:
+            for exp_type in exp_type_list:
+                dir_name = video.split('/')
+                name = dir_name[-2]
+                result_path = video_output_parent_path + '/' + name
+                json_path = result_path + '/' + action + exp_type + '.json'
+                video_save_path = result_path + '/' + action + exp_type + '.mp4'
+                pic_path = result_path
+
+                coco = COCO(json_path)
+
+                if video is not None:
+                    cap = cv2.VideoCapture(video)
+                else:
+                    cap = cv2.VideoCapture(0)
+                _, image = cap.read()
+                if image is None:
+                    logger.error("Can't read video")
+                    sys.exit(-1)
+                fps = cap.get(cv2.CAP_PROP_FPS)
+                ori_w = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+                ori_h = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+                fourcc = cv2.VideoWriter_fourcc(*'MP4V')
+                video_saver = cv2.VideoWriter(video_save_path, fourcc, fps, (ori_w, ori_h))
+
+                for img, anno in tqdm(list(zip(coco.dataset['images'], coco.dataset['annotations']))):
+                    img = draw_human(img, anno, pic_path)
+                    video_saver.write(img)
 
 if __name__ == '__main__':
     exp_list = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19',

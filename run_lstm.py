@@ -153,14 +153,6 @@ def run_lstm(all_video_list, video_output_parent_path, checkpoint_path, stage_nu
                     h = int(w * (ori_h / ori_w))
                     size = [h, w]
 
-                    if save_result_path is not None:
-                        fourcc = cv2.VideoWriter_fourcc(*'MP4V')
-                        video_saver = cv2.VideoWriter(save_result_path + '/' + action + '.MOV', fourcc, fps,
-                                                      (ori_w, ori_h))
-                        logger.info('record vide to %s' % save_result_path + '/' + action + '.MOV')
-                    logger.info('fps@%f' % fps)
-                    time_n = time.time()
-
                     # _, image = cap.read()
                     # image = np.transpose(image, [1, 0, 2])
                     img = np.array(cv2.resize(image, (w, h)))
@@ -174,22 +166,12 @@ def run_lstm(all_video_list, video_output_parent_path, checkpoint_path, stage_nu
                             # image = np.transpose(image, [1, 0, 2])
                         except StopIteration:
                             print('Done!')
-                        img_to_save = image
                         image = np.array(cv2.resize(image, (w, h)))
-                        # cv2.imshow('raw', image)
-                        # img_corner = np.array(cv2.resize(image, (360, int(360*(ori_h/ori_w)))))
                         img = np.concatenate((img, image[np.newaxis, np.newaxis, :]), axis=1)
                         load_img = img  # [:, ::2, :, :, :]
                         peaks, heatmap, vectormap = sess.run([tensor_peaks, hm_up, cpm_up],
                                                              feed_dict={raw_img: load_img, img_size: size})
-                        # plt.imshow(heatmap[0, :, :, 15])
-                        # plt.show()
                         bodys = PoseEstimator.estimate_paf(peaks[0], heatmap[0], vectormap[0])
-                        image = TfPoseEstimator.draw_humans(img_to_save, bodys, imgcopy=False)
-                        fps = round(1 / (time.time() - time_n), 2)
-                        image = cv2.putText(image, str(fps) + 'fps', (10, 15), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1,
-                                            (255, 255, 255))
-                        video_saver.write(image)
 
                         keypoints = []
                         if len(bodys) == 0:
@@ -217,9 +199,9 @@ def run_lstm(all_video_list, video_output_parent_path, checkpoint_path, stage_nu
                         img_count += 1
                     if save_result_path is not None:
                         ref = {"images": coco_images, "annotations": coco_annos}
-                        with open(save_result_path + "/" + action + ".json", "w") as f:
+                        with open(save_result_path + "/" + action + "_lstm.json", "w") as f:
                             json.dump(ref, f)
-                            print('writed to ' + save_result_path + "/" + action + ".json")
+                            print('writed to ' + save_result_path + "/" + action + "_lstm.json")
 
         else:
             dataloader = ParkinsonValDataLoader(path=val_anno_path, img_path=val_img_path,

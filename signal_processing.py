@@ -171,7 +171,7 @@ def LMS(xn, dn, M, mu, itr):
     return (yn, en)
 
 
-def smoother(all_video_list, action_info, result_type_list):
+def smoother(video_output_parent_path, all_video_list, action_info, result_type_list):
     action_list = all_video_list.keys()
     for action in action_list:
         video_list = all_video_list[action]
@@ -179,12 +179,11 @@ def smoother(all_video_list, action_info, result_type_list):
             print(video)
             dir_name = video.split('/')
             name = dir_name[-2]
-            date = dir_name[-3]
 
-            save_path = video_parent_path + '/out/' + date + '/' + name
+            save_path = video_output_parent_path + '/' + name
 
             for result_type in result_type_list:
-                path = save_path + '/result/' + action + '.json'.split('.')[0] + result_type + '.json'
+                path = save_path + "/" + action + '.json'.split('.')[0] + result_type + '.json'
                 data = json.load(open(path, 'r'))
                 draw_human_data = copy.deepcopy(data)
                 fps = 30
@@ -325,7 +324,7 @@ def smoother(all_video_list, action_info, result_type_list):
                     ref = {action_info[action]['pose'][0]: '', action_info[action]['pose'][1]: ''}
 
                 if ref is not None:
-                    with open(save_path + '/result/result_' + action + result_type + '.json', 'w') as f:
+                    with open(save_path + '/result_' + action + result_type + '.json', 'w') as f:
                         json.dump(ref, f)
 
             # return
