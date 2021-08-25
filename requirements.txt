@@ -10,7 +10,7 @@ scipy
 scikit-image
 sklearn
 slidingwindow
-tensorflow-gpu==1.15.2
+tensorflow-gpu==2.5.1
 tensorpack
 tqdm
 xlrd
